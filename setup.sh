@@ -28,7 +28,7 @@ PLAT=`uname -i`
 # Use /tmp to store the package, as the current directory
 # may not be writable, ie. on a CD-ROM.
 #
-SDKPKG=$RELPATH/sdkpkg_64.bin
+SDKPKG=$RELPATH/drivers.tar.gz
 INIT_DIR=`pwd`
 
 echo "Installing the TAR packages..."
