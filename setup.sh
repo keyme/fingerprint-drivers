@@ -107,35 +107,6 @@ if ([ -d /opt/DigitalPersona/UareUSDK/include ] && [ ! -L /usr/include/DigitalPe
   ln -s /opt/DigitalPersona/UareUSDK/include /usr/include/DigitalPersona
 fi
 
-echo "Building and installing kernel module..."
-cd /opt/DigitalPersona/drivers/source/usbdpfp
-make
-if [ -s mod_usbdpfp.ko ]; then
-if [ ! -d /lib/modules/`uname -r`/kernel/drivers/biometric ]; then
-mkdir /lib/modules/`uname -r`/kernel/drivers/biometric
-fi
-cp mod_usbdpfp.ko /lib/modules/`uname -r`/kernel/drivers/biometric/mod_usbdpfp.ko
-cp /opt/DigitalPersona/redist/40-usbdpfp.rules /etc/udev/rules.d/
-/sbin/depmod
-/sbin/modprobe mod_usbdpfp
-
-if [ -s /opt/DigitalPersona/redist/usbdpfp -a -s /opt/DigitalPersona/redist/init-script-functions ]; then
-. /opt/DigitalPersona/redist/init-script-functions
-install_init_script /opt/DigitalPersona/redist/usbdpfp usbdpfp
-setup_init_script usbdpfp
-else
-echo "Script /opt/DigitalPersona/redist/usbdpfp or /opt/DigitalPersona/redist/init-script-functions is missing."
-echo ""
-fi
-else
-KERNEL_BUILD_FAILED=true
-echo ""
-echo "The kernel module build failed. Please check the error message(s) and manually"
-echo "build the kernel from the source in /opt/DigitalPersona/drivers/source/usbdpfp."
-echo ""
-fi
-make clean >> /dev/null
-
 cd $INIT_DIR
 
 if [ -s uninstall ]; then
